@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: update a dynamoDb table.
+Resources:
+  goldpoll:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: update_members
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.10
+      InlineCode: >-
+        def lambda_handler(event, context):
+          print('Checking {} at {}...'.format(SITE, event['time']))
+      Description: update a dynamoDb table.
+      MemorySize: 128
+      Timeout: 60
+      Events:
+        SNS1:
+          Type: SNS
+          Properties:
+            Topic: gold-changes
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: members
