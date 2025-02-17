@@ -1,7 +1,7 @@
 import json
 import boto3
 import http.client
-from bng_latlon import bng_to_latlon
+from bng_latlon.bng_to_latlon import OSGB36toWGS84
 from decimal import *
 from boto3.dynamodb.conditions import Key
 
@@ -52,7 +52,7 @@ def location(item):
     if r1.status == 200:
         data = json.loads(r1.read())
         entry = data['results'][0]['GAZETTEER_ENTRY']
-        return bng_to_latlon(entry['GEOMETRY_X'], entry['GEOMETRY_Y'])
+        return OSGB36toWGS84(entry['GEOMETRY_X'], entry['GEOMETRY_Y'])
     else:
         print(r1.status, r1.reason)
         return 0, 0
