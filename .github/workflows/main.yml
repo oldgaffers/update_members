@@ -27,8 +27,9 @@ jobs:
         run: |
           poetry run pip install -t dist .
           cd dist
-          mv update_members/lambda_function.py .
           zip -x 'update_members*' '*.pyc' -r ../lambda.zip . 
+          cd update_members
+          zip -r ../../lambda.zip . -x '__init__.py' '*.pyc' 
       - name: cred
         uses: aws-actions/configure-aws-credentials@v4
         with:
