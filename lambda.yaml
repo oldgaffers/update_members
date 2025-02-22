@@ -24,3 +24,5 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: members
+        - SSMParameterReadPolicy:
+            ParameterName: OS/API_KEY

@@ -1,7 +1,6 @@
 import json
 from decimal import *
-from initialise import initialise_from_s3
-from update_members.ddb import update
+from ddb import update
 from geo import location
 
 class DecimalEncoder(json.JSONEncoder):
@@ -22,11 +21,6 @@ def calculate_change(before, after):
 def lambda_handler(event, context):
     if 'body' in event:
         response = update(json.loads(event['body'])['detail'])
-    elif 'action' in event:
-        if event['action'] == 'init':
-            data = initialise_from_s3()
-            for item in data:
-                update(item)
     elif 'Records' in event:
         for record in event['Records']:
             message = json.loads(record['Sns']['Message'])
