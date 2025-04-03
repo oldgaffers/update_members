@@ -17,6 +17,7 @@ def calculate_change(before, after):
         lat, lng = location(after)
         change['lat'] = Decimal(str(round(float(lat), 5)))
         change['lng'] = Decimal(str(round(float(lng), 5)))
+    return change
 
 def lambda_handler(event, context):
     if 'body' in event:
