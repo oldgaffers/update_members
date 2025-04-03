@@ -10,7 +10,7 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 def calculate_change(before, after):
-    change = {k:v for (k,v) in after.items() if v != before[k]}
+    change = {k:v for (k,v) in after.items() if v != before.get(k, None)}
     change['ID'] = after['ID']
     change['Member Number'] = after['Member Number']
     if after['Country'] in ['United Kingdom', 'Eire'] and after['Status'] != 'Left OGA':
