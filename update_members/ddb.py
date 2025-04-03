@@ -10,6 +10,7 @@ keymap = {
 }
 
 def update(row):
+    print('R', row)
     primary_key = ['id','membership']
     item = {keymap.get(k, k.lower().replace(' ', '_').replace(':', '')):v for (k,v) in row.items()}
     print(item)
