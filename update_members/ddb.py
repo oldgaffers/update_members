@@ -7,17 +7,15 @@ keymap = {
   'Member Number': 'membership',
   'Payment Method': 'payment', 
   'Trailer': 'smallboats',
+  'Younger Members': 'youngergaffers',
 }
 
 def update(row):
-    print('R', row)
     primary_key = ['id','membership']
     item = {keymap.get(k, k.lower().replace(' ', '_').replace(':', '')):v for (k,v) in row.items()}
-    print(item)
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('members')
     r = table.query(KeyConditionExpression=Key("membership").eq(item['membership']))
-    print(r)
     a = [kv for kv in item.items() if kv[0] not in primary_key]
     keys = [kv[0] for kv in a]
     vals = [kv[1] for kv in a]
