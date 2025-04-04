@@ -7,7 +7,6 @@ keymap = {
   'Member Number': 'membership',
   'Payment Method': 'payment', 
   'Trailer': 'smallboats',
-  'Younger Members': 'youngergaffers',
 }
 
 def update(row):
