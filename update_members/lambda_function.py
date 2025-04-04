@@ -19,17 +19,25 @@ def calculate_change(before, after):
         change['lng'] = Decimal(str(round(float(lng), 5)))
     return change
 
+def sns_handler(record):
+    message = json.loads(record['Sns']['Message'])
+    detail = json.loads(message['Detail'])
+    print('detail', json.dumps(detail))
+    before = detail['before']
+    after = detail['after']
+    change = calculate_change(before, after)
+    return update(change)
+
 def lambda_handler(event, context):
+    # print(json.dumps(event))
     if 'body' in event:
         response = update(json.loads(event['body'])['detail'])
     elif 'Records' in event:
         for record in event['Records']:
-            message = json.loads(record['Sns']['Message'])
-            detail = json.loads(message['Detail'])
-            before = detail['before']
-            after = detail['after']
-            change = calculate_change(before, after)
-            response = update(change)
+            if 'Sns' in record:
+                response = sns_handler(record)
+            else:
+                response = 'ERROR'
     else:
         response = 'ERROR'
     return {
