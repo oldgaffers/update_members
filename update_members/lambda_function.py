@@ -13,10 +13,10 @@ def calculate_change(before, after):
     change = {k:v for (k,v) in after.items() if v != before.get(k, '')}
     change['ID'] = after['ID']
     change['Member Number'] = after['Member Number']
-    if after['Country'] in ['United Kingdom', 'Eire'] and after['Status'] != 'Left OGA':
+    if after['Country'] in ['United Kingdom', 'Eire']:
         lat, lng = location(after)
         change['lat'] = Decimal(str(round(float(lat), 5)))
-        change['lng'] = Decimal(str(round(float(lng), 5)))
+        change['lng'] = Decimal(str(round(float(lng), 5)))]
     return change
 
 def detail_handler(message):
@@ -28,6 +28,7 @@ def detail_handler(message):
     elif type == 'updated':
         before = detail['before']
         after = detail['after']
+    if after['Status'] not in ['Deceased', 'Left OGA']:
         change = calculate_change(before, after)
         return update(change)
 
