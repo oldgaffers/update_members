@@ -19,9 +19,16 @@ def update(row):
     keys = [kv[0] for kv in a]
     vals = [kv[1] for kv in a]
     return table.update_item(
-        Key={ 'id':item['id'], 'membership':item['membership'] },
+        Key={ 'id': item['id'], 'membership': item['membership'] },
         UpdateExpression=f"SET {','.join([f'#f{i}=:var{i}' for i, k in enumerate(keys)])}",
         ExpressionAttributeNames={f'#f{i}':k for i,k in enumerate(keys)},
         ExpressionAttributeValues={f':var{i}':v for i,v in enumerate(vals)},
         ReturnValues="UPDATED_NEW"
+    )
+    
+  def delete(row):
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('members')
+    return table.delete_item(
+      Key={ 'id': row['id'], 'membership': row['membership'] },
     )
