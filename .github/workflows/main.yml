@@ -11,7 +11,7 @@ on:
 jobs:
   deploy_source:
     name: deploy lambda from source
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: checkout source code
         uses: actions/checkout@v1
@@ -22,7 +22,7 @@ jobs:
       - name: install poetry
         uses: abatilo/actions-poetry@v2
         with:
-          poetry-version: '1.2.2'
+          poetry-version: '1.6.1'
       - name: package
         run: |
           poetry run pip install -t dist .
