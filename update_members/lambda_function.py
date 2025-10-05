@@ -1,8 +1,8 @@
 import json
 from decimal import *
 import ddb
-import auth0
-import boatregister
+#import auth0
+#import boatregister
 from geo import location
 
 class DecimalEncoder(json.JSONEncoder):
@@ -26,19 +26,19 @@ def detail_handler(message):
     detail = json.loads(message['Detail'])
     # print('detail', json.dumps(detail))
     if type == 'added':
-      auth0.update(detail)
-      boatregister.update(detail)
+      #auth0.update(detail)
+      #boatregister.update(detail)
       return ddb.update(detail)
     elif type == 'updated':
       before = detail['before']
       after = detail['after']
       if after['Status'] in ['Deceased', 'Left OGA']:
-        auth0.delete(before)
-        boatregister.delete(before)
+        #auth0.delete(before)
+        #boatregister.delete(before)
         return ddb.delete(before)
       else:
-        auth0.update(before, after)
-        boatregister.update(before, after)
+        #auth0.update(before, after)
+        #boatregister.update(before, after)
         change = calculate_change(before, after)
         return ddb.update(change)
 
