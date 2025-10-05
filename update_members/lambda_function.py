@@ -1,6 +1,6 @@
 import json
 from decimal import *
-from ddb import update
+import ddb
 from geo import location
 
 class DecimalEncoder(json.JSONEncoder):
@@ -28,9 +28,11 @@ def detail_handler(message):
     elif type == 'updated':
         before = detail['before']
         after = detail['after']
-    if after['Status'] not in ['Deceased', 'Left OGA']:
+    if after['Status'] in ['Deceased', 'Left OGA']:
+        return ddb.delete(before)
+    else:
         change = calculate_change(before, after)
-        return update(change)
+        return ddb.update(change)
 
 def lambda_handler(event, context):
     # print(json.dumps(event))
